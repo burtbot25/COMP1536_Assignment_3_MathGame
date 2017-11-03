@@ -1,0 +1,33 @@
+.error {
+    color: RED;
+}
+
+.correct {
+    color: green;
+}
+
+form {
+    text-align: center;
+}
+
+.one {
+    float: right;
+}
+
+.two {
+    float: left;
+}
+
+.btn {
+    background-color: #2B8CC4;
+    color: white;
+}
+
+.label-field {
+    float: right;
+
+}
+
+.login-field {
+    float: left;
+}
