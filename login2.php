@@ -1,24 +1,30 @@
 <?php
-extract($_POST);
 session_start();
+extract($_POST);
 
-$info=file("./credentials.config");
+$info = file("credentials.config");
 
-
-for ($pair=0; $pair<count($info); ++$pair) {
-    $pair_array = explode(", ",$info[$pair]);
-    $pair_array_trim=array_map('trim',$pair_array);
-    $mail[$pair]=$pair_array_trim[0];
-    $pass[$pair]=$pair_array_trim[1];
+//Explode login verification
+for ($i = 0; $i < count($info); ++$i){
+    $login = explode(", ", $info[$i]);
+    $login_trim = array_map('trim', $login);
+    $emailMatch[$i] = $login_trim[0];
+    $passwordMatch[$i] = $login_trim[1];
 }
 
-for($check=0; $check<count($mail); ++$check) {
-    if ($email == $mail[$check] && $password == $pass[$check]) {
-        $_SESSION['login'] = true;
-        header("Location: index.php"); die();
+//Verifies if user's credentials
+for($j = 0; $j<count($emailMatch); ++$j) {
+    if ($email == $emailMatch[$j] && $password == $passwordMatch[$j]) {
+        //Redirects if credentials match
+        header("Location: index.php"); 
+        //Stops at redirect if matches, otherwise redirects back into login page
+        die();
     }
 }
 
-header("Location: login.php?invalid=Invalid login credentials"); die();
+//Redirects to login page if credentials didn't match. Also displays invalid message.
+header("Location: login.php?invalid=invalid login credentials");
+    die();
+
 
 ?>

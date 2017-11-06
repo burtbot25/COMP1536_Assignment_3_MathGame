@@ -1,97 +1,107 @@
-<?php
+<?php session_start(); 
+
 extract($_POST);
-session_start();
+
+// Posted answer from the form
+$total = $_POST['answer'];
+
+
+// Count Initial
+if ($_SESSION['attemptCount'] == 0){
+    $_SESSION['correctCount'] = 0;
+    $_SESSION['attemptCount'] = 0;
+}
+
+
+// determining if the user is correct and ups the counters
+if (!empty($_POST['answerField'])){
+    if ($_POST['answerField'] == $total) {
+        $resultMsg =  '<p class="correct">' . 'Correct' . '</p>';
+        $_SESSION['correctCount'] += 1;
+        $_SESSION['attemptCount'] += 1;
+    } else {
+        $resultMsg = '<p class="error">' . 'INCORRECT! ' . $problem . ' = ' . $answer . '</p>';
+        $_SESSION['attemptCount'] += 1;
+    }
+}
+
+// error message for non-numeric and empty
+if (isset($_POST['answerField']) && !is_numeric($answerField)){
+    header ("Location:index.php?message=You must enter a number for you answer.");
+    die();
+}
+
 ?>
-<!DOCTYPE html>
+
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
         <title>Math Game</title>
-        <link rel="stylesheet" href="style/boostrap.min.css" />
-        <link rel="stylesheet" href="style/bootstrap.css" />
-        <link rel="stylesheet" href="style/mathgame.css" type="text/css" />
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <form action="index2.php" method="post">
-        <?php
-            $valueOne = rand(0,50);
-            $valueTwo = rand(0,50);
-            $operator = rand(0,1);
-            if ($_SESSION['total'] == 0){
-                $_SESSION['total'] = 0;
-                $_SESSION['score'] = 0;
-            }
-        ?>
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-4 col-xs-offset-4">
-                        <h1 class="text-center">Math Game</h1>
-                    </div>
-                    <div class="col-xs-4">
-                        <a href="logout.php" class="btn btn-default">Logout</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <?php
-                            echo "<p class='one'>" . $valueOne . "</p>";
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
-                        <?php
-                            if ($operator == 0) {
-                                echo "<p>+</p>";
-                            } else {
-                                echo "<p>-</p>";
-                            }
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
-                        <?php
-                            echo "<p class='two'>" . $valueTwo . "</p>";
-                        ?>
-                    </div>               
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <br />
-                        <input type="text" name="answer" size="20" placeholder="Enter Answer" />
-                    </div>
-                </div>
-                <div>
-                    <?php
-                        echo "<input type='hidden' name='valueOne' value='$valueOne' />";
-                        echo "<input type='hidden' name='valueTwo' value='$valueTwo' />";
-                        echo "<input type='hidden' name='operator' value='$operator' />";
-                    ?>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <br />
-                        <button type="submit" class="btn btn-default" name="submit" value="Submit">Submit</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <?php
-                        echo "<br /><p>Score: " . $_SESSION["score"] . "/" . $_SESSION["total"] . "</p>";
-                        if(!empty($_GET['error'])) {
-                            $message = $_GET['error'];
-                            echo "<p class='error'>" . $message . "</p>";
-                        }
-                        if(!empty($_GET['correct'])) {
-                            $message = $_GET['correct'];
-                            echo "<p class='correct'>" . $message . "</p>";
-                        }
-                        if(!empty($_GET['incorrect'])) {
-                            $message = $_GET['incorrect'];
-                            echo "<p class='error'>" . $message . "</p>";
-                        }
-                        ?>
-                    </div>
-                </div>
+        <div class="container-fluid text-center">
+            
+            <!-- Title and Logout -->
+            <div>
+                <h1>Math Game</h1>
+                <!-- Log out button -->
+                <a href="logout.php"><input type="button" class="btn btn-primary" name="logout" id="logout" value="Logout"/></a>
+                <br />
+                <br />
             </div>
-        </form>
+
+            <!-- Math Problem --> 
+            <div>
+                <?php
+                // variables
+                $num1 = rand(0,50);
+                $num2 = rand(0,50);
+                $operator = rand(0,1);
+                $problem;
+                // 0 = add, 1 = subtract
+                if ($operator == 0){
+                    $answer = $num1 + $num2;
+                } else if ($operator == 1){
+                    $answer = $num1 - $num2;
+                }
+
+                // problem to solve
+                if ($operator == 0){
+                    $problem = $num1 . " + " . $num2;
+                } else if ($operator == 1){
+                    $problem = $num1 . " - " . $num2;
+                }
+                echo $problem; ?>
+            </div>
+            
+            <!-- Form Controls -->
+            <div>
+                <form class="form" role="form" method="post" action="index.php">
+                    <input class="text-center" type="text" name="answerField" id="answerField" placeholder="Enter answer"/>
+                    <input type="hidden" name="answer" id="answer" value='<?php echo $answer;?>'>
+                    <input type="hidden" name="problem" id="problem" value='<?php echo $problem;?>'>
+                    <br />
+                    <br />
+                    <input type="submit" class="btn btn-primary" name="submit" id="submit" value="Submit"/>
+                </form>
+            </div>
+            
+            <!-- Error Message-->
+            <div>
+                <?php
+                if (!empty($_GET['message'])) {
+                    $errorMSG = $_GET['message'];
+                }
+                // Error message
+                echo '<p class="error">' . $errorMSG . '</p>'; 
+                // Right or Wrong
+                echo $resultMsg; 
+                // Counter
+                echo '<p> Score: ' . $_SESSION['correctCount'] . ' / ' . $_SESSION['attemptCount'] . '</p>'; 
+                ?>
+            </div>
+        </div>
     </body>
 </html>
