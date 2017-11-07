@@ -14,20 +14,18 @@ if ($_SESSION['attemptCount'] == 0){
 
 
 // determining if the user is correct and ups the counters
-if (!empty($_POST['answerField'])){
-    if ($_POST['answerField'] == $total) {
-        $resultMsg =  '<p class="correct">' . 'Correct' . '</p>';
-        $_SESSION['correctCount'] += 1;
-        $_SESSION['attemptCount'] += 1;
-    } else {
-        $resultMsg = '<p class="error">' . 'INCORRECT! ' . $problem . ' = ' . $answer . '</p>';
-        $_SESSION['attemptCount'] += 1;
-    }
+if ($answerField == $total && !empty($answerField)) {
+    $resultMsg =  '<p class="correct">' . 'Correct' . '</p>';
+    $_SESSION['correctCount'] += 1;
+    $_SESSION['attemptCount'] += 1;
+} else if ($answerField != $total){
+    $resultMsg = '<p class="error">' . 'INCORRECT! ' . $problem . ' = ' . $answer . '</p>';
+    $_SESSION['attemptCount'] += 1;
 }
 
 // error message for non-numeric and empty
 if (isset($_POST['answerField']) && !is_numeric($answerField)){
-    header ("Location:index.php?message=You must enter a number for you answer.");
+    header ("Location:index.php?message=You must enter a number for your answer.");
     die();
 }
 
