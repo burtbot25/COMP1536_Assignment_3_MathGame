@@ -15,6 +15,7 @@ for ($i = 0; $i < count($info); ++$i){
 //Verifies if user's credentials
 for($j = 0; $j<count($emailMatch); ++$j) {
     if ($email == $emailMatch[$j] && $password == $passwordMatch[$j]) {
+        $_SESSION['login'] = true;
         //Redirects if credentials match
         header("Location: index.php"); 
         //Stops at redirect if matches, otherwise redirects back into login page

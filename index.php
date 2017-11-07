@@ -1,5 +1,10 @@
 <?php session_start(); 
 
+// Checks if the user has logged in
+if (!isset($_SESSION['login'])){
+    header("Location: login.php");
+}
+
 extract($_POST);
 
 // Posted answer from the form
