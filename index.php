@@ -17,8 +17,14 @@ if ($_SESSION['attemptCount'] == 0){
     $_SESSION['attemptCount'] = 0;
 }
 
+// If answer is 0
+if ($total == 0 && $answerField == 0){
+    $resultMsg =  '<p class="correct">' . 'Correct' . '</p>';
+    $_SESSION['correctCount'] += 1;
+    $_SESSION['attemptCount'] += 1;
+} 
 
-// determining if the user is correct and ups the counters
+// If answer is anything but 0
 if ($answerField == $total && !empty($answerField)) {
     $resultMsg =  '<p class="correct">' . 'Correct' . '</p>';
     $_SESSION['correctCount'] += 1;
