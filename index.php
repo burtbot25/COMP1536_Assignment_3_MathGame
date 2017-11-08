@@ -36,23 +36,14 @@ if (!isset($_SESSION['login'])) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4">
-                        <?php
-                            echo "<p class='one'>" . $valueOne . "</p>";
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-12">
                         <?php
                             if ($operator == 0) {
-                                echo "<p>+</p>";
+                                $ops = "+";
                             } else {
-                                echo "<p>-</p>";
+                                $ops = "-";
                             }
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
-                        <?php
-                            echo "<p class='two'>" . $valueTwo . "</p>";
+                            echo "<p>" . $valueOne . " " . $ops . " " . $valueTwo . "</p>";
                         ?>
                     </div>               
                 </div>
