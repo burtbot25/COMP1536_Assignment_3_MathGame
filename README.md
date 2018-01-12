@@ -2,7 +2,7 @@
 
 The third assignment for BCIT's COMP 1536 (Introduction to Web Development).
 
-Students were tasked to create a log-in screen, a simple math game that generates a random question with a score tracker, a log-out button, then deploy the application on the web using Microsoft Azure.
+Students were tasked to create a log-in screen, a simple math game that generates a random question with a score tracker, a log-out button, then deploy the application on the web using Microsoft Azure. 
 
 Link to the website: https://mathgamewilburt.azurewebsites.net/login.php
 
